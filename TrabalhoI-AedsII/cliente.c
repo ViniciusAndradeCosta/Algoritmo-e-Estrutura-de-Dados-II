@@ -7,16 +7,49 @@
 #include <limits.h>
 #include <stdio.h>
 
-// Define o tamanho do buffer para a classificação interna
 #define TAM_BUFFER 6
 
-// Limpa o buffer de entrada de forma portável
+void atualiza_cliente_txt(FILE *dat_in, FILE *livros_dat) {
+    FILE *txt_out = fopen("cliente.txt", "w");
+    if (txt_out == NULL) {
+        perror("Erro ao abrir cliente.txt para escrita");
+        return;
+    }
+
+    rewind(dat_in);
+    TCliente *c;
+    fprintf(txt_out, "============ LISTA DE CLIENTES ============\n\n");
+    while ((c = le_cliente(dat_in)) != NULL) {
+        fprintf(txt_out, "----------------------------------------\n");
+        fprintf(txt_out, "ID do Cliente: %d\n", c->id);
+        fprintf(txt_out, "Nome: %s\n", c->nome);
+        fprintf(txt_out, "CPF: %s\n", c->cpf);
+        fprintf(txt_out, "Endereço: %s\n", c->endereco);
+        fprintf(txt_out, "Email: %s\n", c->email);
+        fprintf(txt_out, "Telefone: %s\n", c->telefone);
+        fprintf(txt_out, "Multas Acumuladas: R$ %.2f\n", c->multas);
+
+        if (c->codl != 0) {
+            fprintf(txt_out, "Livro Alugado (Código): %d\n", c->codl);
+             TLivro *livro = busca_livro_sis(livros_dat, c->codl);
+             if (livro != NULL) {
+                 fprintf(txt_out, "  -> Título: %s\n", livro->titulo);
+                 free(livro);
+             }
+        } else {
+            fprintf(txt_out, "Nenhum livro alugado.\n");
+        }
+        fprintf(txt_out, "----------------------------------------\n\n");
+        free(c);
+    }
+    fclose(txt_out);
+}
+
 void limpar_buffer() {
     int c;
     while ((c = getchar()) != '\n' && c != EOF) {}
 }
 
-// Função de comparação para o qsort, para ordenar clientes por ID
 int compara_clientes(const void *a, const void *b) {
     TCliente *c1 = *(TCliente **)a;
     TCliente *c2 = *(TCliente **)b;
@@ -25,21 +58,16 @@ int compara_clientes(const void *a, const void *b) {
     return 0;
 }
 
-
-// Fase 1 do Merge Sort Externo: Classificação Interna
-// Lê o arquivo de entrada, divide em blocos, ordena em memória e salva em partições
 int classificacao_interna_cliente(FILE *in, char *nome_base_particao) {
     rewind(in);
     int num_particoes = 0;
     TCliente *buffer[TAM_BUFFER];
     int count = 0;
 
-    // Lê registros para o buffer
     TCliente *c = le_cliente(in);
     while (c != NULL) {
         buffer[count++] = c;
         if (count == TAM_BUFFER) {
-            // Buffer cheio, ordena e escreve em uma partição
             qsort(buffer, count, sizeof(TCliente*), compara_clientes);
 
             char nome_particao[100];
@@ -62,7 +90,6 @@ int classificacao_interna_cliente(FILE *in, char *nome_base_particao) {
         c = le_cliente(in);
     }
 
-    // Processa os registros restantes no buffer
     if (count > 0) {
         qsort(buffer, count, sizeof(TCliente*), compara_clientes);
 
@@ -86,8 +113,6 @@ int classificacao_interna_cliente(FILE *in, char *nome_base_particao) {
     return num_particoes;
 }
 
-// Fase 2 do Merge Sort Externo: Intercalação
-// Mescla as partições ordenadas em um único arquivo final
 void intercalacao_cliente(char *nome_base_particao, int num_part, char *nome_final) {
     FILE *out = fopen(nome_final, "wb");
     if (out == NULL) {
@@ -98,14 +123,12 @@ void intercalacao_cliente(char *nome_base_particao, int num_part, char *nome_fin
     FILE *particoes[num_part];
     TCliente *registros[num_part];
 
-    // Abre todas as partições e lê o primeiro registro de cada uma
     for (int i = 0; i < num_part; i++) {
         char nome_part[100];
         sprintf(nome_part, "%s%d.dat", nome_base_particao, i);
         particoes[i] = fopen(nome_part, "rb");
         if (particoes[i] == NULL) {
             perror("Erro ao abrir partição para intercalação");
-            // Lógica de tratamento de erro: fechar arquivos já abertos
             for (int j = 0; j < i; j++) fclose(particoes[j]);
             fclose(out);
             return;
@@ -117,7 +140,6 @@ void intercalacao_cliente(char *nome_base_particao, int num_part, char *nome_fin
         int menor_id = INT_MAX;
         int indice_menor = -1;
 
-        // Encontra o registro com o menor ID entre todas as partições
         for (int i = 0; i < num_part; i++) {
             if (registros[i] != NULL && registros[i]->id < menor_id) {
                 menor_id = registros[i]->id;
@@ -125,18 +147,13 @@ void intercalacao_cliente(char *nome_base_particao, int num_part, char *nome_fin
             }
         }
 
-        // Se não houver mais registros para processar, a intercalação terminou
         if (indice_menor == -1) break;
 
-        // Salva o menor registro no arquivo de saída
         salva_cliente(registros[indice_menor], out);
         free(registros[indice_menor]);
-
-        // Lê o próximo registro da partição de onde o menor registro veio
         registros[indice_menor] = le_cliente(particoes[indice_menor]);
     }
 
-    // Fecha e remove os arquivos de partição
     for (int i = 0; i < num_part; i++) {
         fclose(particoes[i]);
         char nome_part[100];
@@ -156,12 +173,12 @@ TCliente *busca_cliente_sis(FILE *in, int id) {
 
     while ((cliente = le_cliente(in)) != NULL) {
         if (cliente->id == id) {
-            return cliente; // achou: retorna direto
+            return cliente;
         }
-        free(cliente); // não é o cliente que queremos, libera a memória
+        free(cliente);
     }
 
-    return NULL; // não encontrou
+    return NULL;
 }
 
 long busca_posicao_cliente_sis(FILE *in, int id) {
@@ -185,12 +202,10 @@ long busca_posicao_cliente_sis(FILE *in, int id) {
     return -1;
 }
 
-// Tamanho de um registro de cliente
 long tamanho_cliente() {
   return sizeof(TCliente);
 }
 
-// Imprime cliente com verificação de NULL
 void imprime_cliente(TCliente *cliente, FILE *livros) {
   if (cliente == NULL) {
     printf("\nCliente inválido (NULL)\n");
@@ -217,7 +232,6 @@ void imprime_cliente(TCliente *cliente, FILE *livros) {
   printf("\n*************************************************\n");
 }
 
-// Cadastra novo cliente com validação
 void cadastra_cliente(FILE *out) {
   if (out == NULL) {
     printf("Erro: arquivo de saída inválido\n");
@@ -258,19 +272,15 @@ void cadastra_cliente(FILE *out) {
   cliente.multas = 0.0;
   cliente.codl = 0;
 
-  // Posiciona no final do arquivo para adicionar novo cliente
   fseek(out, 0, SEEK_END);
   salva_cliente(&cliente, out);
 }
 
-
-// Salva cliente com verificação de erro
 void salva_cliente(TCliente *cliente, FILE *out) {
   if (cliente == NULL || out == NULL) return;
   fwrite(cliente, sizeof(TCliente), 1, out);
 }
 
-// Lê cliente com tratamento de erro aprimorado
 TCliente *le_cliente(FILE *in) {
   if (in == NULL) return NULL;
   TCliente *cliente = (TCliente *)malloc(sizeof(TCliente));
@@ -283,7 +293,6 @@ TCliente *le_cliente(FILE *in) {
   return cliente;
 }
 
-// Lista todos os clientes com tratamento de erro
 void le_clientes(FILE *in, FILE *livros) {
   if (in == NULL) {
     printf("Erro: arquivo de entrada inválido\n");
@@ -300,12 +309,10 @@ void le_clientes(FILE *in, FILE *livros) {
   }
 }
 
-// Tamanho do registro
 int tamanho_registro_cliente() {
   return sizeof(TCliente);
 }
 
-// Tamanho do arquivo com tratamento de erro
 int tamanho_arquivo_cliente(FILE *arq) {
   if (arq == NULL) return 0;
   fseek(arq, 0, SEEK_END);
@@ -313,7 +320,6 @@ int tamanho_arquivo_cliente(FILE *arq) {
   return (int)(tamanho / tamanho_registro_cliente());
 }
 
-// Em cliente.c
 void busca_sequencial_cliente(FILE *in, FILE *livros) {
   if (in == NULL) {
     printf("Erro: arquivo de entrada inválido\n");
@@ -323,7 +329,7 @@ void busca_sequencial_cliente(FILE *in, FILE *livros) {
   int comp = 0;
   int id;
   TCliente *f = NULL;
-  int encontrado = 0; // Flag para saber se o cliente foi encontrado
+  int encontrado = 0;
 
   printf("\n--- BUSCA SEQUENCIAL DE CLIENTE ---\n");
   printf("Digite o ID do cliente: ");
@@ -361,18 +367,14 @@ void busca_sequencial_cliente(FILE *in, FILE *livros) {
   printf("Número de comparações: %d\n", comp);
   printf("-----------------------------------------\n");
 
-  // *** INÍCIO DA MODIFICAÇÃO PARA SALVAR LOG ***
   FILE *log_file = fopen("log_buscas_cliente.txt", "a");
   if (log_file != NULL) {
       fprintf(log_file, "Tipo de Busca: Sequencial; ID Procurado: %d; Encontrado: %s; Comparações: %d; Tempo: %f segundos\n",
               id, encontrado ? "Sim" : "Nao", comp, tempoTotal);
       fclose(log_file);
   }
-  // *** FIM DA MODIFICAÇÃO ***
 }
 
-// Busca binária aprimorada
-// Em cliente.c
 TCliente *busca_binaria_cliente(FILE *in, FILE *livros) {
     if (in == NULL) {
         printf("Erro: arquivo de entrada inválido.\n");
@@ -389,7 +391,7 @@ TCliente *busca_binaria_cliente(FILE *in, FILE *livros) {
     int right = tam - 1;
     int comp = 0;
     int n;
-    int encontrado = 0; // Flag
+    int encontrado = 0;
 
     printf("\n--- BUSCA BINÁRIA DE CLIENTE ---\n");
     printf("(Certifique-se de que o arquivo esteja ordenado por ID)\n");
@@ -416,14 +418,14 @@ TCliente *busca_binaria_cliente(FILE *in, FILE *livros) {
             printf("\nCLIENTE ENCONTRADO!\n");
             imprime_cliente(cliente, livros);
             encontrado = 1;
-            cliente_encontrado = cliente; // Guarda o ponteiro para retornar
-            break; // Encontrou, pode parar o loop
+            cliente_encontrado = cliente;
+            break;
         } else if (cliente->id < n) {
             left = middle + 1;
         } else {
             right = middle - 1;
         }
-        free(cliente); // Libera a memória se não for o cliente certo
+        free(cliente);
     }
 
     if (!encontrado) {
@@ -438,20 +440,17 @@ TCliente *busca_binaria_cliente(FILE *in, FILE *livros) {
     printf("Número de comparações: %d\n", comp);
     printf("-----------------------------------------\n");
 
-    // *** INÍCIO DA MODIFICAÇÃO PARA SALVAR LOG ***
     FILE *log_file = fopen("log_buscas_cliente.txt", "a");
     if (log_file != NULL) {
         fprintf(log_file, "Tipo de Busca: Binária; ID Procurado: %d; Encontrado: %s; Comparações: %d; Tempo: %f segundos\n",
                 n, encontrado ? "Sim" : "Nao", comp, tempoTotal);
         fclose(log_file);
     }
-    // *** FIM DA MODIFICAÇÃO ***
 
-    return cliente_encontrado; // Retorna o ponteiro (NULL se não encontrou)
+    return cliente_encontrado;
 }
 
 
-// Cria cliente com dados específicos (usado para testes)
 TCliente *cliente_cad(int id, const char *nome, const char *cpf, const char *endereco, const char *email, const char *telefone, double multas, int codl) {
     TCliente *cliente = (TCliente *)malloc(sizeof(TCliente));
     if (cliente == NULL) {
@@ -478,14 +477,17 @@ TCliente *cliente_cad(int id, const char *nome, const char *cpf, const char *end
     return cliente;
 }
 
-// Cria clientes desordenados para teste
 void cria_clientes_desordenado(FILE *out) {
     if (out == NULL) {
         printf("Erro: arquivo de saída inválido\n");
         return;
     }
 
-    // Posiciona no início para recriar a base
+    if(freopen("cliente.dat", "w+b", out) == NULL){
+        perror("Erro ao limpar o arquivo de clientes");
+        return;
+    }
+
     rewind(out);
 
     const int tam = 10;
@@ -497,7 +499,7 @@ void cria_clientes_desordenado(FILE *out) {
         int existe;
         do {
             existe = 0;
-            a = 1 + rand() % 50; // Gera IDs mais variados
+            a = 1 + rand() % 50;
             for (int j = 0; j < i; j++) {
                 if (a == vet[j]) {
                     existe = 1;

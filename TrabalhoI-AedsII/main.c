@@ -170,7 +170,6 @@ int main(int argc, char **argv) {
 
   FILE *func, *livr, *client;
 
-  // Tenta abrir os arquivos existentes, se não conseguir, cria novos
   if ((func = fopen("funcionario.dat", "r+b")) == NULL) {
       func = fopen("funcionario.dat", "w+b");
   }
@@ -186,15 +185,30 @@ int main(int argc, char **argv) {
       exit(1);
   }
 
+  printf("Sincronizando arquivos de visualização .txt...\n");
+  atualiza_funcionario_txt(func);
+  atualiza_livro_txt(livr);
+  atualiza_cliente_txt(client, livr);
+
+
   while (aux != 0) {
     menu();
     printf("\nDigite a opção desejada: ");
     scanf("%d", &aux);
 
     switch (aux) {
-      case 1: cria_funcionario(func); break;
-      case 2: cadastra_cliente(client); break;
-      case 3: cadastra_livro(livr); break;
+      case 1:
+        cria_funcionario(func);
+        atualiza_funcionario_txt(func);
+        break;
+      case 2:
+        cadastra_cliente(client);
+        atualiza_cliente_txt(client, livr);
+        break;
+      case 3:
+        cadastra_livro(livr);
+        atualiza_livro_txt(livr);
+        break;
       case 4: le_funcionarios(func); break;
       case 5: le_clientes(client, livr); break;
       case 6: le_livros(livr); break;
@@ -212,12 +226,35 @@ int main(int argc, char **argv) {
         else if (aux2 == 2) busca_binaria_livro(livr);
         else if (aux2 == 3) busca_binaria_cliente(client, livr);
         break;
-      case 9: alugar_livro(livr, client); break;
-      case 10: devolver_livro(livr, client); break;
-      case 11: multar(livr, client); break;
-      case 12: cria_funcionarios_desordenado(func); le_funcionarios(func); break;
-      case 13: cria_livros_desordenado(livr); le_livros(livr); break;
-      case 14: cria_clientes_desordenado(client); le_clientes(client, livr); break;
+      case 9:
+        alugar_livro(livr, client);
+        atualiza_livro_txt(livr);
+        atualiza_cliente_txt(client, livr);
+        break;
+      case 10:
+        devolver_livro(livr, client);
+        atualiza_livro_txt(livr);
+        atualiza_cliente_txt(client, livr);
+        break;
+      case 11:
+        multar(livr, client);
+        atualiza_cliente_txt(client, livr);
+        break;
+      case 12:
+        cria_funcionarios_desordenado(func);
+        le_funcionarios(func);
+        atualiza_funcionario_txt(func);
+        break;
+      case 13:
+        cria_livros_desordenado(livr);
+        le_livros(livr);
+        atualiza_livro_txt(livr);
+        break;
+      case 14:
+        cria_clientes_desordenado(client);
+        le_clientes(client, livr);
+        atualiza_cliente_txt(client, livr);
+        break;
       case 15:
         printf("\n--- Submenu Ordenar Arquivos ---\n1. Funcionários\n2. Livros\n3. Clientes\nEscolha: ");
         scanf("%d", &aux2);
@@ -230,6 +267,7 @@ int main(int argc, char **argv) {
             rename("func_ordenado.dat", "funcionario.dat");
             func = fopen("funcionario.dat", "r+b");
             printf("Arquivo de funcionários ordenado com sucesso!\n");
+            atualiza_funcionario_txt(func);
         } else if (aux2 == 2) {
             printf("Ordenando arquivo de livros...\n");
             int num_p = classificacao_interna_livro(livr, "part_livro");
@@ -239,6 +277,7 @@ int main(int argc, char **argv) {
             rename("livro_ordenado.dat", "livro.dat");
             livr = fopen("livro.dat", "r+b");
             printf("Arquivo de livros ordenado com sucesso!\n");
+            atualiza_livro_txt(livr);
         } else if (aux2 == 3) {
             printf("Ordenando arquivo de clientes...\n");
             int num_p = classificacao_interna_cliente(client, "part_cli");
@@ -248,6 +287,7 @@ int main(int argc, char **argv) {
             rename("cli_ordenado.dat", "cliente.dat");
             client = fopen("cliente.dat", "r+b");
             printf("Arquivo de clientes ordenado com sucesso!\n");
+            atualiza_cliente_txt(client, livr);
         }
         break;
       case 16: system("clear || cls"); break;

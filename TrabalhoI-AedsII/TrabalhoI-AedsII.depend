@@ -1,47 +1,50 @@
 # depslib dependency file v1.0
-1750877014 source:c:\users\costa\downloads\trabalhoi-aedsii\trabalhoi-aedsii\main.c
+1750993110 source:c:\users\costa\downloads\trabalhoi-aedsii\trabalhoi-aedsii\cliente.c
+	"cliente.h"
+	"livro.h"
+	<stdarg.h>
+	<stdlib.h>
+	<string.h>
+	<time.h>
+	<limits.h>
+	<stdio.h>
+
+1750989464 c:\users\costa\downloads\trabalhoi-aedsii\trabalhoi-aedsii\cliente.h
+	"livro.h"
+	<stdio.h>
+	<stdlib.h>
+
+1750993090 c:\users\costa\downloads\trabalhoi-aedsii\trabalhoi-aedsii\livro.h
+	<stdio.h>
+	<stdlib.h>
+
+1750993130 source:c:\users\costa\downloads\trabalhoi-aedsii\trabalhoi-aedsii\funcionario.c
+	"funcionario.h"
+	<stdarg.h>
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<time.h>
+	<limits.h>
+
+1750989494 c:\users\costa\downloads\trabalhoi-aedsii\trabalhoi-aedsii\funcionario.h
+	<stdio.h>
+	<stdlib.h>
+
+1750993097 source:c:\users\costa\downloads\trabalhoi-aedsii\trabalhoi-aedsii\livro.c
+	"livro.h"
+	<limits.h>
+	<stdarg.h>
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<time.h>
+
+1750989534 source:c:\users\costa\downloads\trabalhoi-aedsii\trabalhoi-aedsii\main.c
 	"cliente.h"
 	"funcionario.h"
 	"livro.h"
 	<stdio.h>
 	<stdlib.h>
 	<time.h>
-
-1750877078 c:\users\costa\downloads\trabalhoi-aedsii\trabalhoi-aedsii\cliente.h
-	<stdio.h>
-	<stdlib.h>
-
-1750877059 c:\users\costa\downloads\trabalhoi-aedsii\trabalhoi-aedsii\funcionario.h
-	<stdio.h>
-	<stdlib.h>
-
-1750889932 c:\users\costa\downloads\trabalhoi-aedsii\trabalhoi-aedsii\livro.h
-	<stdio.h>
-	<stdlib.h>
-
-1750887309 source:c:\users\costa\downloads\trabalhoi-aedsii\trabalhoi-aedsii\cliente.c
-	"cliente.h"
-	"livro.h"
-	<stdarg.h>
-	<stdlib.h>
-	<string.h>
-	<time.h>
-	<limits.h>
-	<stdio.h>
-
-1750887145 source:c:\users\costa\downloads\trabalhoi-aedsii\trabalhoi-aedsii\livro.c
-	"livro.h"
-	<stdarg.h>
-	<stdlib.h>
-	<string.h>
-	<time.h>
-	<limits.h>
-
-1750889595 source:c:\users\costa\downloads\trabalhoi-aedsii\trabalhoi-aedsii\funcionario.c
-	"livro.h"
-	<stdarg.h>
-	<stdlib.h>
-	<string.h>
-	<time.h>
-	<limits.h>
 

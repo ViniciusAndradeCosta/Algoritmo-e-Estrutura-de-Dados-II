@@ -1,7 +1,9 @@
 #ifndef CLIENTES_CLIENTE_H
 #define CLIENTES_CLIENTE_H
+#include "livro.h"
 #include <stdio.h>
 #include <stdlib.h>
+
 
 typedef struct Cliente {
   int id;
@@ -19,7 +21,6 @@ void imprime_cliente(TCliente *cliente, FILE *livros);
 
 void cadastra_cliente(FILE *out);
 
-// Salva cliente no arquivo out, na posicao atual do cursor
 void salva_cliente(TCliente *cliente, FILE *out);
 
 TCliente *le_cliente(FILE *in);
@@ -30,7 +31,6 @@ void busca_sequencial_cliente(FILE *in, FILE *livros);
 
 TCliente *busca_binaria_cliente(FILE *in, FILE *livros);
 
-// Funções para ordenação externa
 int classificacao_interna_cliente(FILE *in, char *nome_base_particao);
 void intercalacao_cliente(char *nome_base_particao, int num_part, char *nome_final);
 
@@ -48,5 +48,7 @@ long busca_posicao_cliente_sis(FILE *in, int id);
 TCliente *cliente_cad(int id, const char *nome, const char *cpf, const char *endereco, const char *email, const char *telefone, double multas, int codl);
 
 void cria_clientes_desordenado(FILE *out);
+
+void atualiza_cliente_txt(FILE *dat_in, FILE *livros_dat);
 
 #endif

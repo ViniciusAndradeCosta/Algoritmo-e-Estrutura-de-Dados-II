@@ -4,16 +4,15 @@
 #include <stdlib.h>
 
 typedef struct Livro {
-  int cod;
 
-  char autor[50];
-  char titulo[50];
   double preco;
-  char editora[15];
+  int cod;
   int paginas;
   int edicao;
   int qtd;
-
+  char titulo[50];
+  char autor[50];
+  char editora[15];
 } TLivro;
 
 void imprime_livro(TLivro *livro);
@@ -32,16 +31,18 @@ int tamanho_arquivo_livro(FILE *arq);
 void busca_sequencial_livro(FILE *in);
 TLivro *busca_binaria_livro(FILE *in);
 
-// Funções de ordenação externa
 int classificacao_interna_livro(FILE *in, char *nome_base_particao);
 void intercalacao_livro(char *nome_base_particao, int num_part, char *nome_final);
 
 TLivro *busca_livro_sis(FILE *in, int cod);
 int busca_posicao_livro_sis(FILE *in, int cod);
 
-TLivro *livro_cad(int cod, char *autor, char *titulo, char *editora,
-                  double preco, int paginas, int edicao, int qtd);
+TLivro *livro_cad(double preco, int cod, int paginas, int edicao, int qtd,
+                  char *titulo, char *autor, char *editora);
 
 void cria_livros_desordenado(FILE *out);
+
+void atualiza_livro_txt(FILE *dat_in);
+
 
 #endif

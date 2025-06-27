@@ -8,6 +8,33 @@
 
 #define TAM_BUFFER 6
 
+void atualiza_funcionario_txt(FILE *dat_in) {
+    FILE *txt_out = fopen("funcionario.txt", "w");
+    if (txt_out == NULL) {
+        perror("Erro ao abrir funcionario.txt para escrita");
+        return;
+    }
+
+    rewind(dat_in);
+    TFunc *f;
+    fprintf(txt_out, "========= LISTA DE FUNCIONÁRIOS =========\n\n");
+    while ((f = le_funcionario(dat_in)) != NULL) {
+        fprintf(txt_out, "----------------------------------------\n");
+        fprintf(txt_out, "Código: %d\n", f->cod);
+        fprintf(txt_out, "Nome: %s\n", f->nome);
+        fprintf(txt_out, "CPF: %s\n", f->cpf);
+        fprintf(txt_out, "Data de Nascimento: %s\n", f->data_nascimento);
+        fprintf(txt_out, "Salário: R$ %.2f\n", f->salario);
+        fprintf(txt_out, "Endereço: %s\n", f->endereco);
+        fprintf(txt_out, "Email: %s\n", f->email);
+        fprintf(txt_out, "Telefone: %s\n", f->telefone);
+        fprintf(txt_out, "----------------------------------------\n\n");
+        free(f);
+    }
+    fclose(txt_out);
+}
+
+
 void limpar_buffer_func() {
     int c;
     while ((c = getchar()) != '\n' && c != EOF) {}
@@ -21,12 +48,10 @@ int tamanho_arquivo_func(FILE *arq) {
   return tam;
 }
 
-// Salva funcionario no arquivo out
 void salva_funcionario(TFunc *func, FILE *out) {
   fwrite(func, sizeof(TFunc), 1, out);
 }
 
-// Imprime funcionario
 void imprime_funcionario(TFunc *func) {
   printf("**********************************************\n");
   printf("Funcionário de código: %d\n", func->cod);
@@ -40,7 +65,6 @@ void imprime_funcionario(TFunc *func) {
   printf("**********************************************\n");
 }
 
-// Le um funcionario do arquivo in na posicao atual do cursor
 TFunc *le_funcionario(FILE *in) {
   TFunc *func = (TFunc *)malloc(sizeof(TFunc));
   if (fread(func, sizeof(TFunc), 1, in) != 1) {
@@ -50,7 +74,6 @@ TFunc *le_funcionario(FILE *in) {
   return func;
 }
 
-// Cria funcionario
 void cria_funcionario(FILE *out) {
   TFunc func;
   memset(&func, 0, sizeof(TFunc));
@@ -92,7 +115,6 @@ void cria_funcionario(FILE *out) {
   salva_funcionario(&func, out);
 }
 
-// Função de comparação para qsort
 int compara_funcionarios(const void *a, const void *b) {
     TFunc *f1 = *(TFunc **)a;
     TFunc *f2 = *(TFunc **)b;
@@ -101,7 +123,6 @@ int compara_funcionarios(const void *a, const void *b) {
     return 0;
 }
 
-// Classificação interna para funcionários
 int classificacao_interna_funcionario(FILE *in, char *nome_base_particao) {
     rewind(in);
     int num_particoes = 0;
@@ -142,7 +163,6 @@ int classificacao_interna_funcionario(FILE *in, char *nome_base_particao) {
     return num_particoes;
 }
 
-// Intercalação para funcionários
 void intercalacao_funcionario(char *nome_base_particao, int num_part, char *nome_final) {
     FILE *out = fopen(nome_final, "wb");
     FILE *particoes[num_part];
@@ -203,7 +223,12 @@ TFunc *funcionario_cad(int cod, char *nome, char *cpf, char *data_nascimento,
 }
 
 void cria_funcionarios_desordenado(FILE *out) {
+  if(freopen("funcionario.dat", "w+b", out) == NULL){
+      perror("Erro ao limpar o arquivo de funcionários");
+      return;
+  }
   rewind(out);
+
   const int tam = 5;
   int vet[tam];
 
@@ -247,12 +272,11 @@ void le_funcionarios(FILE *in) {
   }
 }
 
-// Em funcionario.c
 void busca_sequencial_funcionario(FILE *in) {
   int comp = 0;
   int cod;
   TFunc *f = NULL;
-  int encontrado = 0; // Flag
+  int encontrado = 0;
 
   printf("\n--- BUSCA SEQUENCIAL DE FUNCIONÁRIO ---\n");
   printf("Digite o código do funcionário: ");
@@ -285,17 +309,14 @@ void busca_sequencial_funcionario(FILE *in) {
   printf("Número de comparações: %d\n", comp);
   printf("-----------------------------------------\n");
 
-  // *** INÍCIO DA MODIFICAÇÃO PARA SALVAR LOG ***
   FILE *log_file = fopen("log_buscas_funcionario.txt", "a");
   if (log_file != NULL) {
       fprintf(log_file, "Tipo de Busca: Sequencial; Código Procurado: %d; Encontrado: %s; Comparações: %d; Tempo: %f segundos\n",
               cod, encontrado ? "Sim" : "Nao", comp, tempoTotal);
       fclose(log_file);
   }
-  // *** FIM DA MODIFICAÇÃO ***
 }
 
-// Em funcionario.c
 TFunc *busca_binaria_funcionario(FILE *in) {
     int tam = tamanho_arquivo_func(in);
     if (tam <= 0) {
@@ -307,7 +328,7 @@ TFunc *busca_binaria_funcionario(FILE *in) {
     int left = 0;
     int right = tam - 1;
     int comp = 0;
-    int encontrado = 0; // Flag
+    int encontrado = 0;
     TFunc *func_encontrado = NULL;
 
     printf("\n--- BUSCA BINÁRIA DE FUNCIONÁRIO ---\n");
@@ -351,14 +372,12 @@ TFunc *busca_binaria_funcionario(FILE *in) {
     printf("Número de comparações: %d\n", comp);
     printf("-----------------------------------------\n");
 
-    // *** INÍCIO DA MODIFICAÇÃO PARA SALVAR LOG ***
     FILE *log_file = fopen("log_buscas_funcionario.txt", "a");
     if (log_file != NULL) {
         fprintf(log_file, "Tipo de Busca: Binária; Código Procurado: %d; Encontrado: %s; Comparações: %d; Tempo: %f segundos\n",
                 n, encontrado ? "Sim" : "Nao", comp, tempoTotal);
         fclose(log_file);
     }
-    // *** FIM DA MODIFICAÇÃO ***
 
     return func_encontrado;
 }
