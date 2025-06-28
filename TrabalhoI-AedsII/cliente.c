@@ -249,23 +249,23 @@ void cadastra_cliente(FILE *out) {
   }
   limpar_buffer();
 
-  printf("Digite o nome (max 49 caracteres): ");
+  printf("Digite o nome: ");
   fgets(cliente.nome, 50, stdin);
   cliente.nome[strcspn(cliente.nome, "\n")] = '\0';
 
-  printf("Digite o CPF (max 14 caracteres): ");
+  printf("Digite o CPF: ");
   fgets(cliente.cpf, 15, stdin);
   cliente.cpf[strcspn(cliente.cpf, "\n")] = '\0';
 
-  printf("Digite o endereço (max 99 caracteres): ");
+  printf("Digite o endereço: ");
   fgets(cliente.endereco, 100, stdin);
   cliente.endereco[strcspn(cliente.endereco, "\n")] = '\0';
 
-  printf("Digite o telefone (max 19 caracteres): ");
+  printf("Digite o telefone: ");
   fgets(cliente.telefone, 20, stdin);
   cliente.telefone[strcspn(cliente.telefone, "\n")] = '\0';
 
-  printf("Digite o email (max 49 caracteres): ");
+  printf("Digite o email: ");
   fgets(cliente.email, 50, stdin);
   cliente.email[strcspn(cliente.email, "\n")] = '\0';
 

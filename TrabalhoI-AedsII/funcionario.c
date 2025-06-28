@@ -49,7 +49,7 @@ int tamanho_arquivo_func(FILE *arq) {
 }
 
 void salva_funcionario(TFunc *func, FILE *out) {
-  fwrite(func, sizeof(TFunc), 1, out);
+    fwrite(func, sizeof(TFunc), 1, out);
 }
 
 void imprime_funcionario(TFunc *func) {

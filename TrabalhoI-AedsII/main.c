@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <locale.h> // Biblioteca para configuração de local
 
 void alugar_livro(FILE *livro, FILE *cliente) {
   int codc;
@@ -166,6 +167,9 @@ void menu() {
 
 
 int main(int argc, char **argv) {
+  // Configura o local para Português, permitindo acentuação
+  setlocale(LC_ALL, "Portuguese");
+
   int aux = -1, aux2 = -1;
 
   FILE *func, *livr, *client;
