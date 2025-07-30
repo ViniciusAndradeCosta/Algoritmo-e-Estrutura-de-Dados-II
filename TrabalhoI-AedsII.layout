@@ -2,29 +2,19 @@
 <CodeBlocks_layout_file>
 	<FileVersion major="1" minor="0" />
 	<ActiveTarget name="Debug" />
-	<File name="cliente.c" open="1" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="-1" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="18678" topLine="530" />
-		</Cursor>
-	</File>
 	<File name="livro.h" open="1" top="0" tabpos="7" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
 			<Cursor1 position="1037" topLine="0" />
 		</Cursor>
 	</File>
-	<File name="funcionario.c" open="1" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="12409" topLine="361" />
-		</Cursor>
-	</File>
 	<File name="main.c" open="1" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="15624" topLine="387" />
+			<Cursor1 position="14626" topLine="365" />
 		</Cursor>
 	</File>
-	<File name="cliente.h" open="1" top="1" tabpos="5" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="funcionario.c" open="1" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="1677" topLine="12" />
+			<Cursor1 position="12409" topLine="362" />
 		</Cursor>
 	</File>
 	<File name="funcionario.h" open="1" top="0" tabpos="6" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
@@ -32,9 +22,19 @@
 			<Cursor1 position="1107" topLine="0" />
 		</Cursor>
 	</File>
+	<File name="cliente.h" open="1" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="1681" topLine="13" />
+		</Cursor>
+	</File>
 	<File name="livro.c" open="1" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="-1" zoom_2="0">
 		<Cursor>
 			<Cursor1 position="12501" topLine="392" />
+		</Cursor>
+	</File>
+	<File name="cliente.c" open="1" top="1" tabpos="2" split="0" active="1" splitpos="0" zoom_1="-1" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="13035" topLine="374" />
 		</Cursor>
 	</File>
 </CodeBlocks_layout_file>
