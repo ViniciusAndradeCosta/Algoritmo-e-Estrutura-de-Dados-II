@@ -1,0 +1,103 @@
+# depslib dependency file v1.0
+1753832612 source:c:\users\costa\downloads\trabalhoi-aedsii\trabalhoi-aedsii\cliente.c
+	"cliente.h"
+	"livro.h"
+	<stdarg.h>
+	<stdlib.h>
+	<string.h>
+	<time.h>
+	<limits.h>
+	<stdio.h>
+
+1753832185 c:\users\costa\downloads\trabalhoi-aedsii\trabalhoi-aedsii\cliente.h
+	"livro.h"
+	<stdio.h>
+	<stdlib.h>
+
+1753832357 c:\users\costa\downloads\trabalhoi-aedsii\trabalhoi-aedsii\livro.h
+	<stdio.h>
+	<stdlib.h>
+
+1753832541 source:c:\users\costa\downloads\trabalhoi-aedsii\trabalhoi-aedsii\funcionario.c
+	"funcionario.h"
+	<stdarg.h>
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<time.h>
+	<limits.h>
+
+1753832535 c:\users\costa\downloads\trabalhoi-aedsii\trabalhoi-aedsii\funcionario.h
+	<stdio.h>
+	<stdlib.h>
+
+1753832522 source:c:\users\costa\downloads\trabalhoi-aedsii\trabalhoi-aedsii\livro.c
+	"livro.h"
+	<limits.h>
+	<stdarg.h>
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<time.h>
+
+1753832585 source:c:\users\costa\downloads\trabalhoi-aedsii\trabalhoi-aedsii\main.c
+	"cliente.h"
+	"funcionario.h"
+	"livro.h"
+	<stdio.h>
+	<stdlib.h>
+	<time.h>
+	<locale.h>
+
+1754018610 source:c:\users\costa\downloads\trabalhoii-aedsii\cliente.c
+	"cliente.h"
+	"livro.h"
+	<stdarg.h>
+	<stdlib.h>
+	<string.h>
+	<time.h>
+	<limits.h>
+	<stdio.h>
+
+1753836100 c:\users\costa\downloads\trabalhoii-aedsii\cliente.h
+	"livro.h"
+	<stdio.h>
+	<stdlib.h>
+
+1753836100 c:\users\costa\downloads\trabalhoii-aedsii\livro.h
+	<stdio.h>
+	<stdlib.h>
+
+1754017862 source:c:\users\costa\downloads\trabalhoii-aedsii\funcionario.c
+	"funcionario.h"
+	<stdarg.h>
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<time.h>
+	<limits.h>
+
+1753836100 c:\users\costa\downloads\trabalhoii-aedsii\funcionario.h
+	<stdio.h>
+	<stdlib.h>
+
+1754018078 source:c:\users\costa\downloads\trabalhoii-aedsii\livro.c
+	"livro.h"
+	<limits.h>
+	<stdarg.h>
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<time.h>
+
+1753996534 source:c:\users\costa\downloads\trabalhoii-aedsii\main.c
+	"cliente.h"
+	"funcionario.h"
+	"livro.h"
+	<stdio.h>
+	<stdlib.h>
+	<time.h>
+	<locale.h>
+	<direct.h>
+	<sys/stat.h>
+

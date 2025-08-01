@@ -1,1 +1,0 @@
-# Trabalho II - AEDs II
